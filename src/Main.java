@@ -9,19 +9,23 @@ public class Main {
         //Create coffee machine
         CoffeeMachine coffeeMachine = new CoffeeMachine();
 
-        //print info
-        coffeeMachine.printInfo();
+        //create variable to store the user action choice
+        String userAction;
 
-        System.out.println("Write action (buy, fill, take):");
-        String userAction = scanner.nextLine();
+        do {
+            System.out.println("Write action (buy, fill, take, remaining, exit):");
+            userAction = scanner.nextLine();
 
-        if ("buy".equals(userAction)) {
-            coffeeMachine.buyCoffee(scanner);
-        } else if ("fill".equals(userAction)) {
-            coffeeMachine.fillSupplies(scanner);
-        } else {
-            coffeeMachine.giveMoney();
-        }
+            if ("buy".equals(userAction)) {
+                coffeeMachine.buyCoffee(scanner);
+            } else if ("fill".equals(userAction)) {
+                coffeeMachine.fillSupplies(scanner);
+            } else if ("take".equals(userAction)){
+                coffeeMachine.giveMoney();
+            } else if ("remaining".equals(userAction)){
+                coffeeMachine.printInfo();
+            }
+        } while(!"exit".equals(userAction));
 
     }
 }

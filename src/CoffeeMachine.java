@@ -39,7 +39,6 @@ public class CoffeeMachine {
     public void giveMoney() {
         System.out.printf("I gave you $%d\n\n", this.availableMoney);
         this.availableMoney = 0;
-        printInfo();
     }
 
     public void fillSupplies(Scanner scanner) {
@@ -58,23 +57,47 @@ public class CoffeeMachine {
         System.out.println("\nWrite how many disposable cups you want to add:");
         int cupsAdded = scanner.nextInt();
         this.availableCups = this.availableCups + cupsAdded;
-
-        printInfo();
     }
 
     public void buyCoffee(Scanner scanner) {
-        System.out.println("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino:");
-        int userChoice = scanner.nextInt();
+        System.out.println("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino, back - to main menu:");
+        String userChoice = scanner.next();
 
         Coffee userCoffee;
 
-        if (userChoice == 1) {
+        if ("1".equals(userChoice)) {
             userCoffee = new Espresso();
-        } else if (userChoice == 2) {
+        } else if ("2".equals(userChoice)) {
             userCoffee = new Latte();
-        } else {
+        } else if ("3".equals(userChoice)){
             userCoffee = new Cappuccino();
+        } else {
+            return;
         }
+
+        //Verify that there are enough resources to make the coffee
+        if (this.availableWater < userCoffee.getRequiredWater()) {
+            System.out.println("Sorry, not enough water!");
+            return;
+        }
+
+        if (this.availableMilk < userCoffee.getRequiredMilk()) {
+            System.out.println("Sorry, not enough milk!");
+            return;
+        }
+
+        if (this.availableCoffee < userCoffee.getRequiredCoffee()) {
+            System.out.println("Sorry, not enough coffee!");
+            return;
+        }
+
+        if (this.availableCups == 0) {
+            System.out.println("Sorry, not enough disposable cups!");
+            return;
+        }
+
+        //Make coffee and print message
+        System.out.println("I have enough resources, making you a coffee!");
 
         //Update coffee machine inventory
         this.availableMoney = this.availableMoney + userCoffee.getPrice();
@@ -82,8 +105,6 @@ public class CoffeeMachine {
         this.availableMilk = this.availableMilk - userCoffee.getRequiredMilk();
         this.availableCoffee = this.availableCoffee - userCoffee.getRequiredCoffee();
         this.availableCups = this.availableCups - 1;
-
-        printInfo();
     }
 
 
